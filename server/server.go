@@ -9,9 +9,14 @@ import (
 )
 
 const (
-	envPrefix          = "GWTMP"
-	configPort         = "port"
-	configAllowOrigins = "allow_origins"
+	envPrefix               = "GWTMP"
+	configPort              = "port"
+	configAllowOrigins      = "allow_origins"
+	configDownloadChromeURL = "chrome_download_url"
+	configExternalApmURL    = "external_apm_url"
+	configAuthURL           = "auth_url"
+	configSupportLink       = "support_link"
+	configService1          = "service1"
 )
 
 var (
@@ -20,7 +25,11 @@ var (
 
 func init() {
 	viper.SetDefault(configPort, 8080)
+	viper.SetDefault(configService1, "service1:8080")
 	viper.SetDefault(configAllowOrigins, "http://localhost*")
+	viper.SetDefault(configExternalApmURL, "http://localhost:8200")
+	viper.SetDefault(configSupportLink, "https://open.rocket.chat")
+	viper.SetDefault(configAuthURL, "http://localhost/auth/login")
 	viper.SetEnvPrefix(envPrefix)
 	viper.AutomaticEnv()
 }
