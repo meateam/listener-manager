@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	grpcPoolTypes "github.com/meateam/grpc-go-conn-pool/grpc/types"
-	"github.com/meateam/listener-template/factory"
+	"github.com/meateam/listener-manager/factory"
 	ppb "github.com/meateam/permission-service/proto"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc/codes"

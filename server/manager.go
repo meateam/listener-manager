@@ -55,9 +55,10 @@ func NewManager(logger *logrus.Logger) (*gin.Engine, []*grpc.ClientConn) {
 
 	apiRoutesGroup := r.Group("/api")
 
+	aliveStr := "alive"
 	// Health Check route.
 	apiRoutesGroup.GET("/healthcheck", func(c *gin.Context) {
-		c.Status(http.StatusOK)
+		c.JSON(http.StatusOK, aliveStr)
 	})
 
 	// Initiate services gRPC connections.
@@ -67,13 +68,13 @@ func NewManager(logger *logrus.Logger) (*gin.Engine, []*grpc.ClientConn) {
 	}
 
 	// Initiate routers.
-	pm := permission.NewManager(permissionConn, logger)
+	permission.NewManager(permissionConn, logger)
 
-	// Authentication middleware on routes group.
-	authRequiredRoutesGroup := apiRoutesGroup.Group("/")
+	// // Authentication middleware on routes group.
+	// authRequiredRoutesGroup := apiRoutesGroup.Group("/")
 
-	// Initiate client connection to file service.
-	pm.Setup(authRequiredRoutesGroup)
+	// // Initiate client connection to file service.
+	// pm.Setup(authRequiredRoutesGroup)
 
 	// Create a slice to manage connections and return it: []*grpc.ClientConn{conn1}
 	return r, []*grpc.ClientConn{}
