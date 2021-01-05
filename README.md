@@ -1,3 +1,3 @@
-# gateway-template
+# listener-manager
 
-### A generic gateway for http-to-rpc requests forwarding 
+### A manager for listening to rabbit queue and fetching the required metadata from the grpc connections

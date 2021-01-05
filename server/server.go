@@ -9,14 +9,12 @@ import (
 )
 
 const (
-	envPrefix               = "GWTMP"
+	envPrefix               = "LM"
 	configPort              = "port"
 	configAllowOrigins      = "allow_origins"
-	configDownloadChromeURL = "chrome_download_url"
 	configExternalApmURL    = "external_apm_url"
-	configAuthURL           = "auth_url"
-	configSupportLink       = "support_link"
-	configService1          = "service1"
+	configPermissionService = "permission_service"
+	configPoolSize          = "pool_size"
 )
 
 var (
@@ -25,28 +23,27 @@ var (
 
 func init() {
 	viper.SetDefault(configPort, 8080)
-	viper.SetDefault(configService1, "service1:8080")
+	viper.SetDefault(configPermissionService, "permission-service:8080")
 	viper.SetDefault(configAllowOrigins, "http://localhost*")
 	viper.SetDefault(configExternalApmURL, "http://localhost:8200")
-	viper.SetDefault(configSupportLink, "https://open.rocket.chat")
-	viper.SetDefault(configAuthURL, "http://localhost/auth/login")
+	viper.SetDefault(configPoolSize, 4)
 	viper.SetEnvPrefix(envPrefix)
 	viper.AutomaticEnv()
 }
 
-// Server is a structure that holds the http server of the gateway-template.
+// Server is a structure that holds the http server of the listener-manager.
 type Server struct {
 	server *http.Server
 	conns  []*grpc.ClientConn
 }
 
-// NewServer creates a Server of the gateway-template.
+// NewServer creates a Server of the listener-manager.
 func NewServer() *Server {
-	router, conns := NewRouter(logger)
+	manager, conns := NewManager(logger)
 
 	s := &http.Server{
 		Addr:           ":" + viper.GetString(configPort),
-		Handler:        router,
+		Handler:        manager,
 		MaxHeaderBytes: 1 << 20,
 	}
 	return &Server{server: s, conns: conns}
